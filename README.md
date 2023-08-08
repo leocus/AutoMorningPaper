@@ -12,7 +12,10 @@ pip install -r ./requirements.txt
 Create a bot on Telegram using [BotFather](https://t.me/botfather) and get the token.
 Then, send a message to the bot and retrieve the chat id from `https://api.telegram.org/bot<TOKEN>/getUpdates`
 
-### 3. Create the configuration file
+### 3. Download Llama 2
+Choose one of the quantized models from https://huggingface.co/TheBloke/Llama-2-7B-GGML/tree/main and change the model path in `./summarize_arxiv.py`.
+
+### 4. Create the configuration file
 Create a file called `config.yaml` in the cloned repository, structured as follows:
 
 ```yaml
