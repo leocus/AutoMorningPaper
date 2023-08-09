@@ -1,6 +1,6 @@
 # AutoMorningPaper
 
-Do you fancy your own zero-effort "The morning paper"? Fear not! With the paper of LLMs and LangChain you can run your own ArXiv paper summarizer that automatically scans for new papers and sends them to you over Telegram!
+Do you fancy your own zero-effort "The morning paper"? Fear not! With the power of LLMs and LangChain you can run your own ArXiv paper summarizer that automatically scans for new papers and sends them to you over Telegram!
 
 ## Installation
 ### 1. Download the repo and install the requirements:
