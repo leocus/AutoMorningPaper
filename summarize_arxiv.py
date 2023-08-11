@@ -9,29 +9,30 @@ from langchain.text_splitter import TokenTextSplitter, RecursiveCharacterTextSpl
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 
+# Make sure the model path is correct for your system!
+llm = LlamaCpp(
+    model_path="/home/leonardo/Scaricati/llama-2-7b-chat.ggmlv3.q8_0.bin",
+    n_ctx=1024*8,
+    n_parts=-1,
+    f16_kv=True,
+    logits_all=False,
+    vocab_only=False,
+    use_mmap=True,
+    use_mlock=False,
+    n_threads=None,
+    n_batch=512,
+    temperature=1.0,
+    max_tokens=512,
+    top_p=0.90,
+    top_k=40,
+    streaming=True,
+    last_n_tokens_size=64,
+)
+
+
 def summarize(arxiv_id):
     text = ArxivLoader(query=arxiv_id, load_max_docs=2).load()
     text = text[0].page_content[:]  # all pages of the Document content
-
-    # Make sure the model path is correct for your system!
-    llm = LlamaCpp(
-        model_path="/path/to/llama-2-7b-chat.ggmlv3.q8_0.bin",
-        n_ctx=1024*8,
-        n_parts=-1,
-        f16_kv=True,
-        logits_all=False,
-        vocab_only=False,
-        use_mmap=True,
-        use_mlock=False,
-        n_threads=None,
-        n_batch=512,
-        temperature=1.0,
-        max_tokens=512,
-        top_p=0.90,
-        top_k=40,
-        streaming=True,
-        last_n_tokens_size=64,
-    )
 
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=10000,
