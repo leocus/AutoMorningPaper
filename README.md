@@ -33,3 +33,8 @@ criteria: # Add some keywords to detect topics of interest, e.g.,
   - explainability
 model_path: "/path/to/llama-2-7b-chat.ggmlv3.q8_0.bin"
 ```
+
+## See it in action!
+
+Explainable and interpretable AI: https://t.me/+ENLgtQWBzHk2OWU0
+Federated Learning and Tiny ML: https://t.me/+onXvUQpsJpUwZTY0

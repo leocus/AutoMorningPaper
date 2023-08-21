@@ -10,7 +10,7 @@ from langchain.text_splitter import TokenTextSplitter, RecursiveCharacterTextSpl
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 
-cfg = yaml.load(open("/home/leonardo/AutoMorningPaper/config.yaml"), Loader=yaml.CLoader)
+cfg = yaml.load(open("./config.yaml"), Loader=yaml.CLoader)
 
 # Make sure the model path is correct for your system!
 llm = LlamaCpp(

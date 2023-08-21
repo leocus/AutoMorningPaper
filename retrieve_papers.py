@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from summarize_arxiv import summarize
 
 # Load cfg
-cfg = yaml.load(open("config.yaml"), Loader=yaml.CLoader)
+cfg = yaml.load(open("./config.yaml"), Loader=yaml.CLoader)
 
 TOKEN = cfg["token"]
 CHAT_ID = cfg["chat_id"]
@@ -54,12 +54,13 @@ async def main():
                         summary = summarize(href.split("/")[-1])
 
                         message = f"<b>{title_text}</b>\n\n{summary}\n\nLink: {title_link}"
+                        print(message)
 
                         async with bot:
                             await bot.send_message(text=message, chat_id=CHAT_ID, parse_mode="HTML")
                         break
                 seen.add(href)
-    pickle.dump(seen, open("seen.pkl", "wb"))
+    pickle.dump(seen, open("./seen.pkl", "wb"))
 
 if __name__ == '__main__':
     asyncio.run(main())
