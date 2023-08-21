@@ -1,3 +1,4 @@
+import yaml
 import typer
 from langchain.llms import LlamaCpp
 from langchain import PromptTemplate, LLMChain
@@ -9,9 +10,11 @@ from langchain.text_splitter import TokenTextSplitter, RecursiveCharacterTextSpl
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 
+cfg = yaml.load(open("/home/leonardo/AutoMorningPaper/config.yaml"), Loader=yaml.CLoader)
+
 # Make sure the model path is correct for your system!
 llm = LlamaCpp(
-    model_path="/path/to/llama-2-7-chat.ggmlv3.q8_0.bin",
+    model_path=cfg['model_path'],
     n_ctx=4000,
     n_parts=-1,
     f16_kv=True,
