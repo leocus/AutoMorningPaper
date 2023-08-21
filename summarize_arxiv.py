@@ -11,8 +11,8 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 # Make sure the model path is correct for your system!
 llm = LlamaCpp(
-    model_path="/home/leonardo/Scaricati/llama-2-7b-chat.ggmlv3.q8_0.bin",
-    n_ctx=1024*8,
+    model_path="/path/to/llama-2-7-chat.ggmlv3.q8_0.bin",
+    n_ctx=4000,
     n_parts=-1,
     f16_kv=True,
     logits_all=False,
@@ -21,8 +21,8 @@ llm = LlamaCpp(
     use_mlock=False,
     n_threads=None,
     n_batch=512,
-    temperature=1.0,
-    max_tokens=512,
+    temperature=0.75,
+    max_tokens=1024,
     top_p=0.90,
     top_k=40,
     streaming=True,
@@ -34,8 +34,8 @@ def summarize(arxiv_id):
     text = ArxivLoader(query=arxiv_id, load_max_docs=2).load()
     text = text[0].page_content[:]  # all pages of the Document content
 
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=10000,
+    text_splitter = TokenTextSplitter(
+        chunk_size=4000,
         chunk_overlap=50
     )
 
@@ -47,7 +47,7 @@ def summarize(arxiv_id):
 
     summary_chain = load_summarize_chain(
         llm=llm,
-        chain_type='refine',
+        chain_type='stuff',
     )
     output = summary_chain.run(docs)
     print(output)
