@@ -32,6 +32,8 @@ criteria: # Add some keywords to detect topics of interest, e.g.,
   - xai
   - explainability
 model_path: "/path/to/llama-2-7b-chat.ggmlv3.q8_0.bin"
+# Choose as summarizer one of the classes defined in `summarizers.py`
+summarizer: BulletListSumarizer
 ```
 
 ## See it in action!
@@ -39,3 +41,8 @@ model_path: "/path/to/llama-2-7b-chat.ggmlv3.q8_0.bin"
 Explainable and interpretable AI: https://t.me/+ENLgtQWBzHk2OWU0
 
 Federated Learning and Tiny ML: https://t.me/+onXvUQpsJpUwZTY0
+
+## TBI
+- Compatibility with other messaging platforms:
+    - [ ] Slack
+    - [ ] Discord
