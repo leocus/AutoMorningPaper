@@ -8,4 +8,4 @@ arxiv
 pymupdf
 tiktoken
 omegaconf
-pip install slack_sdk
+slack_sdk
