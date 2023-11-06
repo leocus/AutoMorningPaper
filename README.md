@@ -25,8 +25,12 @@ lists: # Add lists of interest from arxiv, e.g.,
   - "cs.CV"
   - "cs.GL"
   - "cs.NE"
-token: # Add your token here
-chat_id: # Add your chat id here
+bot:
+  class_name: # Currently supports SlackBot and TelegramBot
+  parameters:
+    token: <your token here>
+    channel: <your chat id here> # Only for SlackBot
+    chat_id: <your chat id here> # Only for TelegramBot
 criteria: # Add some keywords to detect topics of interest, e.g.,
   - interpretability
   - xai
@@ -44,5 +48,4 @@ Federated Learning and Tiny ML: https://t.me/+onXvUQpsJpUwZTY0
 
 ## TBI
 - Compatibility with other messaging platforms:
-    - [ ] Slack
     - [ ] Discord

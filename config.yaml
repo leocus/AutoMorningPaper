@@ -1,0 +1,34 @@
+lists: # Add lists of interest from arxiv, e.g.,
+  - "cs.LG"
+  - "cs.AI"
+  - "cs.CV"
+  - "cs.GL"
+  - "cs.NE"
+bot:
+  class_name: SlackBot
+  parameters:
+    token: <your token here>
+    channel: <your chat id here>
+criteria: # Add some keywords to detect topics of interest, e.g.,
+  - interpretability
+  - xai
+  - explainability
+model_path: "/Users/leonardocustode/Downloads/llama-2-7b-chat.ggmlv3.q4_0.bin"
+summarizer: BulletListSumarizer
+
+
+
+
+
+
+
+
+
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  

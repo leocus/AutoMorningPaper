@@ -1,18 +1,16 @@
-import yaml
 import pickle
 import asyncio
 import requests
-import telegram
+from bots import BotRegister
 from bs4 import BeautifulSoup
+from omegaconf import OmegaConf
 from summarize_arxiv import summarize
 
 # Load cfg
-cfg = yaml.load(open("./config.yaml"), Loader=yaml.CLoader)
+cfg = OmegaConf.load('./config.yaml')
 
-TOKEN = cfg["token"]
-CHAT_ID = cfg["chat_id"]
-
-bot = telegram.Bot(TOKEN)
+print(cfg)
+bot = BotRegister().make_bot(cfg)
 
 criteria = cfg["criteria"]
 
@@ -56,8 +54,7 @@ async def main():
                         message = f"<b>{title_text}</b>\n\n{summary}\n\nLink: {title_link}"
                         print(message)
 
-                        async with bot:
-                            await bot.send_message(text=message, chat_id=CHAT_ID, parse_mode="HTML")
+                        bot.send_message(text=message)
                         break
                 seen.add(href)
     pickle.dump(seen, open("./seen.pkl", "wb"))
