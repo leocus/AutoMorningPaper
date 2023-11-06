@@ -7,3 +7,5 @@ typer==0.9.0
 arxiv
 pymupdf
 tiktoken
+omegaconf
+pip install slack_sdk
