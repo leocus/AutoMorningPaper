@@ -1,6 +1,6 @@
 from abc import abstractmethod
-from langchain.llms import LlamaCpp
 from langchain import PromptTemplate, LLMChain
+from langchain.text_splitter import TokenTextSplitter
 from langchain.chains.summarize import load_summarize_chain
 
 
@@ -18,25 +18,8 @@ class SummarizerRegistry(type):
 
 
 class Summarizer:
-    def __init__(self, model_path):
-        self._llm = LlamaCpp(
-            model_path=model_path,
-            n_ctx=4000,
-            n_parts=-1,
-            f16_kv=True,
-            logits_all=False,
-            vocab_only=False,
-            use_mmap=True,
-            use_mlock=False,
-            n_threads=None,
-            n_batch=512,
-            temperature=0.75,
-            max_tokens=1024,
-            top_p=0.90,
-            top_k=40,
-            streaming=True,
-            last_n_tokens_size=64,
-        )
+    def __init__(self, llm):
+        self._llm = llm
         self._chain = None
 
     def get_chain(self) -> LLMChain:
@@ -49,18 +32,37 @@ class Summarizer:
 
 
 class PlainTextSummarizer(Summarizer, metaclass=SummarizerRegistry):
-    def __init__(self, model_path):
-        super().__init__(model_path)
+    def __init__(self, llm):
+        super().__init__(llm)
         self._chain = load_summarize_chain(
             llm=self._llm,
             chain_type='stuff',
         )
 
 class BulletListSumarizer(Summarizer, metaclass=SummarizerRegistry):
-    def __init__(self, model_path):
-        super().__init__(model_path)
+    def __init__(self, llm):
+        super().__init__(llm)
         template = PromptTemplate(
             input_variables=["paper"],
-            template="Here is a paper:\n{paper}\n\nMake a concise summary of the paper using a bullet list.",
+            template="<|system|>You are a helpful scientific bot. Your job is to make precise summaries of papers|></s><|user|>Here is a paper:\n{paper}\n\nMake a concise summary of the paper using a bullet list.</s><|assistant|>",
         )
         self._chain = LLMChain(llm=self._llm, prompt=template)
+
+class RecursiveSummarizer():
+    def __init__(self, summarizer):
+        self._summarizer = summarizer
+
+        template = PromptTemplate(
+            input_variables=["summary"],
+            template="Here is a summary of a paper:\n{summary}\n\nClean this summary by removing repeated entries and unnecessary information.",
+        )
+        self._refine_chain = LLMChain(llm=self._summarizer._llm, prompt=template)
+
+        # Leaves some margin for the prompt (probably, it can be reduced)
+        self._text_splitter = TokenTextSplitter(chunk_size=context_length - 300, chunk_overlap=10)
+
+    def summarize(self, text):
+        summary = ""
+        for split in self._text_splitter.split_text(text):
+            summary += self._summarizer.summarize(split) + "\n"
+        return summary

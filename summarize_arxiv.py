@@ -1,13 +1,13 @@
 import yaml
 import typer
-from summarizers import SummarizerRegistry
+from langchain.llms import CTransformers
 from langchain.document_loaders import ArxivLoader
-from langchain.text_splitter import TokenTextSplitter
-from langchain.chains import LLMChain
+from summarizers import SummarizerRegistry, RecursiveSummarizer
 
 
 cfg = yaml.load(open("./config.yaml"), Loader=yaml.CLoader)
-summarizer = SummarizerRegistry.get(cfg["summarizer"])(cfg["model_path"])
+llm = CTransformers(model="TheBloke/zephyr-7B-beta-GGUF", model_file="zephyr-7b-beta.Q4_K_M.gguf", model_type="mistral", config={'gpu_layers': cfg['gpu_layers'], 'context_length' : cfg['context_length']})
+summarizer = RecursiveSummarizer(SummarizerRegistry.get(cfg["summarizer"])(llm, cfg['context_length']))
 
 
 def summarize(arxiv_id):

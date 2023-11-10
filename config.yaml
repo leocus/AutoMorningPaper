@@ -13,22 +13,6 @@ criteria: # Add some keywords to detect topics of interest, e.g.,
   - interpretability
   - xai
   - explainability
-model_path: "/Users/leonardocustode/Downloads/llama-2-7b-chat.ggmlv3.q4_0.bin"
 summarizer: BulletListSumarizer
-
-
-
-
-
-
-
-
-
-
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
+gpu_layers: 0  # Set here the n. of layers to move to the GPU
+context_length: 2000  # Context length
