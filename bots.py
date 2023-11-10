@@ -7,6 +7,7 @@ Description: This file contains an implementation of intefaces
 """
 import abc
 import slack
+import asyncio
 import telegram
 
 
@@ -25,7 +26,7 @@ class Bot:
     """This is the base class for messaging bots."""
 
     @abc.abstractmethod
-    async def send_message(self, text: str):
+    def send_message(self, text: str):
         """
         Sends a message to a pre-determined recipient.
 
@@ -51,7 +52,17 @@ class TelegramBot(Bot, BotRegister):
         self._chat_id = chat_id
         self._bot = telegram.Bot(self._token)
 
-    async def send_message(self, text: str):
+
+    def send_message(self, text: str):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        try:
+            loop.run_until_complete(self._send_message_async(text))
+        finally:
+            loop.close()
+
+    async def _send_message_async(self, text: str):
         async with self._bot:
             await self._bot.send_message(text=text, chat_id=self._chat_id, parse_mode="HTML")
 
@@ -72,6 +83,6 @@ class SlackBot(Bot, BotRegister):
         self._channel = channel
         self._bot = slack.WebClient(token=token)
 
-    async def send_message(self, text: str):
+    def send_message(self, text: str):
         self._bot.chat_postMessage(channel=self._channel, text=text)
 
